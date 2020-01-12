@@ -1,0 +1,278 @@
+---
+title: "Efficient Analytic Approximation of the Optimal Hedging Strategy for a European Call Option with Transaction Costs - Vakamouline"
+output:
+  beamer_presentation:
+    latex_engine: xelatex
+  header-includes:
+    - usepackage{amssymb}
+---
+
+
+## Black Scholes Assumptions
+Assumptions on the Market:
+- Frictionless Market
+- Unlimited Short Selling
+- Unlimited Borrowing
+- No Arbitrage
+
+Assumptions on Assets:
+- Riskless Rate exists
+- Random Walk
+- No Dividend
+- Constant Implied Volatility
+
+##  A realistic view on Black-Scholes
+Black Scholes Model states: Option payoff can be replicated by means of a self-financing strategy, which holds 
+a riskless security and a risky stock.
+Risk factors are modelled as partial derivatives of the unique BS price.
+Discrete time requires rebalancing at every step, which realistically causes unbounded transaction cost.
+
+## Tradeoff Risk vs. Transaction Cost
+- Reduce Transaction Cost by allowing Bounds for Price Fluctuation
+- Re-hedge only when price is out of bounds
+- 'Hedging around (BS-) delta'
+
+## Problems of the Utility-based Approach
+- No closed-form Solution
+- Computationally expensive
+- Time consuming
+
+## Previous Literature
+- Leland (1985)
+- Hodges and Neuberger (1989)
+- Clewlow and Hodges (1997)
+- Whally and Wilmott (1997)
+- Barles and Soner (1998)
+
+## Key results from Leland
+- Leland 1985 delta-hedging under transaction cost
+- Black Scholes only rebalances at discrete intervals, expected volume of transactions becomes unbounded.
+- Leland in continuous time setting using proportional transaction costs
+- Shows how variance adjustment in BS Formlua can lead to zero expected replication error, 
+which goes to zero with the length of the rebalancing interval.
+
+## Key results except Leland
+- Optimal Strategy components: Hedging Bandwidth and Volatility Adjustment
+- Individual Risk Preference is incorporated in Utility Function
+
+## Contribution
+- Utility-based Hedging Strategy and Asymptotic Strategy Comparison
+- Approximate optimal Hedging Strategy
+- Empirical Performance Comparison under Transaction cost
+
+## Performance Comparison Measures
+- Mean-Variance
+- Mean VaR
+- Mean Expected Shortfall
+
+## Utility Based Hedging Model I
+
+Diffusion Process of Stock
+$$
+dS_t = \mu S_t dt + \sigma S_t dW_t
+$$
+
+Inner Value of a Call
+$$
+V(T, S_T) = max{S_T - K, 0}
+$$
+
+## Utility Based Hedging Model II
+
+Hedging Portfolio to be rebalanced at every time step
+$$
+V(t, S_t) - \Delta(1+\lambda)S_t
+$$
+
+Black-Scholes Value of a European Call
+$$
+V(t, S_t) = S_t N(d_1) - K e^(-r(T-t)) N(d_2)
+$$
+
+where 
+
+
+$$
+\begin{aligned}
+d_1 = \frac{ln(S/K) + (r + 0.5 \sigma^2) (T-t)}{\sigma \sqrt(T-t)} \\
+d_2 = d_1 - \sigma \sqrt(T-t) 
+\end{aligned}
+$$
+
+
+Delta
+$$
+\Delta = \frac{\delta V}{\delta S} = N(d_1)
+$$
+
+## Optimal Hedging
+- Rebalancing often takes place at sub-optimal times
+- Should target optimal tradeoff between stock risk and transaction cost
+- Considers investor's risk attitude
+(- 'Indifference Argument')
+
+## Expected Utility I
+
+Hedger's Value function *without* liabilities:
+
+$$
+J_0(t, x_t, y_t, S_t) = max \mathbb{E}[U(x_T + y_T S_T)]
+$$
+Hedger's Value function *with* liabilities
+
+$$
+J_w(t, x_t, y_t, S_t) = max \mathbb{E}[U(x_T + y_T S_T - max(S_T - K, 0)]
+$$
+
+with x being the amount of available cash, y being the amount of shares.
+
+## Expected Utility II
+
+The unique option price fulfills the condition
+
+$$
+J_w(t, x_t, y_t, S_t) = J_0(t, x_t, y_t, S_t) 
+$$
+
+where $U(z) = -\exp(-\gamma z); \gamma > 0$
+and $\gamma$ measures the hedger's risk aversion.
+
+## Properties of the Utility function
+- Strategy does not depend on available cash
+- Low computational complexity
+
+Which counteracts real-world Black-Scholes behavior.
+Andersen and Damgaard (1999) showed that this form of a Utility Function is acceptable.
+
+
+## Show Figure 1
+abc
+
+## Some Hedging Strategies
+- Fixed Bandwidth around Delta
+- Whalley and Wilmott
+- Barles and Soner
+
+## Fixed Bandwidth around Delta
+
+$$
+\Delta = \frac{\delta V}{\delta S} \pm H
+$$
+
+where H is a measure for risk of the hedging portfolio.
+H increases with risk affinity.
+
+Problems: 
+- Numerically effortful  
+- Bandwidth is not constant  
+
+## Whalley and Wilmott
+$$
+\Delta = \frac{\delta V}{\delta S} \pm H' = \frac{\delta V}{\delta S} \pm (\frac{3}{2} *\frac{e^{-r(T-t)} \lambda S \Gamma^2}{\gamma} )^{\frac{1}{3}}
+$$
+Properties:
+- $\lambda \rightarrow 0$ approx. Black-Scholes Delta
+- Increasing $\gamma$ decreases Bandwidth to mitigate risk on the hedging portfolio
+- 'Naturally' depends on $\Gamma$
+
+(- $S \rightarrow 0$ as well as $S \rightarrow \infty$ causes $\Gamma$ to be small)
+
+## Barles and Soner
+
+Assuming that transaction costs and risk tolerance are small:
+
+$$
+\Delta = \frac{\delta V}{\delta S} \pm H'' = \frac{\delta V}{\delta S} \pm \frac{1}{\lambda \gamma S} g(-\lambda^2 \gamma S^2 \Gamma)
+$$
+
+with an adjusted volatility
+
+$$
+\sigma_m^2 = \sigma^2 (1 + f(-e^{r(T-t)} \lambda^2 \gamma S^2 \Gamma))
+$$
+
+f(z) is the unique solution of the initial value problem
+
+$$
+\frac{df(z)}{dz} = \frac{f(z) + 1}{2 \sqrt{zf(z)} - z}, z \neq 0, f(0) = 0 
+$$
+
+$$
+g(z) = \sqrt{zf(z)} - z
+$$
+
+## Barles and Soner Properties  
+
+- Bandwidth reacts like Whalley and Wilmott  
+- Volatility Adjustment flattens $\Delta$; less sensitive to price for short call but increases for long call  
+
+y. In a nutshell,
+the explanation is the following: Recall that both the hedging error and the
+amount of transaction costs of a discretely adjusted delta-neutral replicating
+strategy are path-dependent. In particular, the amount of transaction costs
+depends on the absolute value of the option gamma (see, for example, Leland
+(1985)). The hedging error depends on the values and the signs of the option
+theta and gamma (see Boyle and Emanuel (1980)). It turns out that the
+Leland’s modified hedging volatility makes the hedging error be “negatively”
+correlated with transaction costs: the hedging error becomes positive when
+transaction costs are high, and the hedging error becomes negative when
+transaction costs are low. Thus, the Leland’s modified volatility “equalizes”
+the replication error across different stock paths, which reduces the risk of
+a hedging strategy.
+
+## Testing the Strategies
+Undervaluation or overvaluation of the volatility adjustment with respect to the size of the
+hedging bandwidth results in a drastic deterioration of the performance of
+a hedging strategy. 
+That is why the performance of an asymptotic strategy
+is noticeably worse than that of the exact strategy when some of the model
+parameters are not very small. Consequently, for practical applications it
+makes sense to use the alternative to the asymptotic analysis, namely, the
+approximation method.
+
+## The Approximation Method
+Trade slow computation of optimal strategy for quick approximate strategy
+
+Properties:
+- Rebalance into Bounds if Stock Price is in no-transaction-region  
+- $\Gamma \rightarrow 0$ implies Bounds are constant 
+- Modified Volatility (as explained)
+
+$$
+\Delta = \frac{\delta V(\sigma_m)}{\delta S} \pm (H_w + H_0)
+$$
+
+where $H_0$ does not depend on$\Gamma$
+
+## The Approximation Method II
+
+After fitting the model, the approximation will equal the asymptotic models for the same parameters.
+The coefficients turn out to be
+
+$$
+H_0 = \frac{\lambda}{\gamma S \sigma^2(T-t)}
+$$
+
+$$
+H_w = 1.12 \lambda^{0.31} (T-t)^{0.05} (\frac{e^{-r(T-t)}}{\sigma})^{0.25} (\frac{abs(\Gamma)}{\gamma})^{0.5} 
+$$
+$$
+\sigma^2_m = \sigma^2( 1 + 4.76 (\frac{\lambda^{0.78}}{(T-t)^{0.02}} (\frac{e^{-r(T-t)}}{\sigma} (\gamma S^2 abs(\Gamma))^{0.15} ) 
+$$
+
+This could be interpreted as follows: the shorter the time to maturity,
+the lesser the gains from a better rebalanced position as compared with the
+transaction costs payed.
+
+## The Simulation
+
+Simulate Stock path according to
+
+$$
+S_{t+\delta t} = S_t \exp( (\mu - 0.5 \sigma^2)\delta t + \sigma \sqrt{\delta t} \epsilon_t )
+$$
+with standard normally distributed noise. As the setting is in discrete time, at each $\delta t$ it is verified whether a rebalance is necessary for the hedging portfolio.
+
+## Insert Figures
+
+## Summary
