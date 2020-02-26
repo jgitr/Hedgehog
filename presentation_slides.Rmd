@@ -1,5 +1,7 @@
 ---
-title: "Efficient Analytic Approximation of the Optimal Hedging Strategy for a European Call Option with Transaction Costs - Vakamouline"
+title: "Efficient Analytic Approximation of the Optimal Hedging Strategy for a European Call Option with Transaction Costs"
+author: Julian Winkel
+date: '2020-01-13'
 output:
   beamer_presentation:
     latex_engine: xelatex
@@ -7,19 +9,31 @@ output:
     - usepackage{amssymb}
 ---
 
+## Introduction
 
-## Black Scholes Assumptions
-Assumptions on the Market:
-- Frictionless Market
-- Unlimited Short Selling
-- Unlimited Borrowing
-- No Arbitrage
+Option writers desire to only take directional risk by hedging against certain factors.
+The most popular method is Delta Hedging. 
+How is such a strategy actually implemented and what are the pitfalls?
 
-Assumptions on Assets:
-- Riskless Rate exists
-- Random Walk
-- No Dividend
-- Constant Implied Volatility
+## Classic Problems in Call Valuation
+
+- Numerical vs. Analytical Approach
+- Numerical: Computational Effort and Time Risk (Arbitrage)
+- Analytical: Unrealistic Assumptions
+
+## Black Scholes Assumptions on the Market
+
+- Frictionless Market  
+- Unlimited Short Selling  
+- Unlimited Borrowing  
+- No Arbitrage  
+
+## Black Scholes Assumptions on Assets
+
+- Riskless Rate exists  
+- Random Walk  
+- No Dividend  
+- Constant Implied Volatility  
 
 ##  A realistic view on Black-Scholes
 Black Scholes Model states: Option payoff can be replicated by means of a self-financing strategy, which holds 
@@ -206,7 +220,7 @@ $$
 - Bandwidth reacts like Whalley and Wilmott  
 - Volatility Adjustment flattens $\Delta$; less sensitive to price for short call but increases for long call  
 
-y. In a nutshell,
+In a nutshell,
 the explanation is the following: Recall that both the hedging error and the
 amount of transaction costs of a discretely adjusted delta-neutral replicating
 strategy are path-dependent. In particular, the amount of transaction costs
